@@ -10,7 +10,18 @@ def encrypt_vigenere(plaintext: str, keyword: str) -> str:
     'LXFOPVEFRNHR'
     """
     ciphertext = ""
-    # PUT YOUR CODE HERE
+    alphabet_low = "abcdefghijklmnopqrstuvwxyz"
+    alphabet_high = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+    key_length = len(keyword)
+    for i in range(len(plaintext)):
+        if plaintext[i] in alphabet_high:
+            key = ord(keyword[i % key_length]) - ord("A")
+            ciphertext += alphabet_high[(alphabet_high.find(plaintext[i]) + key) % 26]
+        elif plaintext[i] in alphabet_low:
+            key = ord(keyword[i % key_length]) - ord("a")
+            ciphertext += alphabet_low[(alphabet_low.find(plaintext[i]) + key) % 26]
+        else:
+            ciphertext += plaintext[i]
     return ciphertext
 
 
@@ -26,5 +37,16 @@ def decrypt_vigenere(ciphertext: str, keyword: str) -> str:
     'ATTACKATDAWN'
     """
     plaintext = ""
-    # PUT YOUR CODE HERE
+    alphabet_low = "abcdefghijklmnopqrstuvwxyz"
+    alphabet_high = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+    key_length = len(keyword)
+    for i in range(len(ciphertext)):
+        if ciphertext[i] in alphabet_high:
+            key = ord(keyword[i % key_length]) - ord("A")
+            plaintext += alphabet_high[(alphabet_high.find(ciphertext[i]) - key) % 26]
+        elif ciphertext[i] in alphabet_low:
+            key = ord(keyword[i % key_length]) - ord("a")
+            plaintext += alphabet_low[(alphabet_low.find(ciphertext[i]) - key) % 26]
+        else:
+            plaintext += ciphertext[i]
     return plaintext
