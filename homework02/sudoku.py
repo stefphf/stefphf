@@ -6,7 +6,7 @@ T = tp.TypeVar("T")
 
 
 def read_sudoku(path: tp.Union[str, pathlib.Path]) -> tp.List[tp.List[str]]:
-    """ Прочитать Судоку из указанного файла """
+    """Прочитать Судоку из указанного файла"""
     path = pathlib.Path(path)
     with path.open() as f:
         puzzle = f.read()
@@ -20,7 +20,7 @@ def create_grid(puzzle: str) -> tp.List[tp.List[str]]:
 
 
 def display(grid: tp.List[tp.List[str]]) -> None:
-    """Вывод Судоку """
+    """Вывод Судоку"""
     width = 2
     line = "+".join(["-" * (width * 3)] * 3)
     for row in range(9):
@@ -45,7 +45,7 @@ def group(values: tp.List[T], n: int) -> tp.List[tp.List[T]]:
     """
     ans = []
     for i in range(0, len(values), n):
-        ans += [values[i: i + n]]
+        ans += [values[i : i + n]]
     return ans
     pass
 
@@ -139,7 +139,7 @@ def find_possible_values(grid: tp.List[tp.List[str]], pos: tp.Tuple[int, int]) -
 
 
 def solve(grid: tp.List[tp.List[str]]) -> tp.Optional[tp.List[tp.List[str]]]:
-    """ Решение пазла, заданного в grid """
+    """Решение пазла, заданного в grid"""
     """ Как решать Судоку?
         1. Найти свободную позицию
         2. Найти все возможные значения, которые могут находиться на этой позиции
@@ -165,12 +165,16 @@ def solve(grid: tp.List[tp.List[str]]) -> tp.Optional[tp.List[tp.List[str]]]:
 
 
 def check_solution(solution: tp.List[tp.List[str]]) -> bool:
-    """ Если решение solution верно, то вернуть True, в противном случае False """
+    """Если решение solution верно, то вернуть True, в противном случае False"""
     # TODO: Add doctests with bad puzzles
     for row in range(len(solution)):
         for col in range(len(solution)):
             pos = (row, col)
-            if (set(get_col(solution, pos)) != set("123456789")) or (set(get_row(solution, pos)) != set("123456789")) or (set(get_block(solution, pos)) != set("123456789")):
+            if (
+                (set(get_col(solution, pos)) != set("123456789"))
+                or (set(get_row(solution, pos)) != set("123456789"))
+                or (set(get_block(solution, pos)) != set("123456789"))
+            ):
                 return False
     return True
     pass
@@ -204,7 +208,7 @@ def generate_sudoku(N: int) -> tp.List[tp.List[str]]:
     div = len(grid) // 9
     gr = []
     for i in range(div):
-        gr.append(grid[i * div: (i + 1) * div])
+        gr.append(grid[i * div : (i + 1) * div])
     solve(gr)
     for i in range(81 - N):
         row = randint(0, 8)
