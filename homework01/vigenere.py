@@ -1,7 +1,6 @@
 def encrypt_vigenere(plaintext: str, keyword: str) -> str:
     """
     Encrypts plaintext using a Vigenere cipher.
-
     >>> encrypt_vigenere("PYTHON", "A")
     'PYTHON'
     >>> encrypt_vigenere("python", "a")
@@ -10,25 +9,29 @@ def encrypt_vigenere(plaintext: str, keyword: str) -> str:
     'LXFOPVEFRNHR'
     """
     ciphertext = ""
-    alphabet_low = "abcdefghijklmnopqrstuvwxyz"
-    alphabet_high = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
     key_length = len(keyword)
     for i in range(len(plaintext)):
-        if plaintext[i] in alphabet_high:
+        symbol = plaintext[i]
+        if symbol.isupper():
             key = ord(keyword[i % key_length]) - ord("A")
-            ciphertext += alphabet_high[(alphabet_high.find(plaintext[i]) + key) % 26]
-        elif plaintext[i] in alphabet_low:
+            if 65 <= ord(symbol) + key <= 90:
+                ciphertext += chr((ord(symbol) + key))
+            else:
+                ciphertext += chr((ord(symbol) + key) - 26)
+        elif symbol.islower():
             key = ord(keyword[i % key_length]) - ord("a")
-            ciphertext += alphabet_low[(alphabet_low.find(plaintext[i]) + key) % 26]
+            if 97 <= ord(symbol) + key <= 122:
+                ciphertext += chr((ord(symbol) + key))
+            else:
+                ciphertext += chr((ord(symbol) + key) - 26)
         else:
-            ciphertext += plaintext[i]
+            ciphertext += symbol
     return ciphertext
 
 
 def decrypt_vigenere(ciphertext: str, keyword: str) -> str:
     """
     Decrypts a ciphertext using a Vigenere cipher.
-
     >>> decrypt_vigenere("PYTHON", "A")
     'PYTHON'
     >>> decrypt_vigenere("python", "a")
@@ -37,16 +40,21 @@ def decrypt_vigenere(ciphertext: str, keyword: str) -> str:
     'ATTACKATDAWN'
     """
     plaintext = ""
-    alphabet_low = "abcdefghijklmnopqrstuvwxyz"
-    alphabet_high = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
     key_length = len(keyword)
     for i in range(len(ciphertext)):
-        if ciphertext[i] in alphabet_high:
+        element = ciphertext[i]
+        if element.isupper():
             key = ord(keyword[i % key_length]) - ord("A")
-            plaintext += alphabet_high[(alphabet_high.find(ciphertext[i]) - key) % 26]
-        elif ciphertext[i] in alphabet_low:
+            if 65 <= ord(element) - key <= 90:
+                plaintext += chr((ord(element) - key))
+            else:
+                plaintext += chr((ord(element) - key) + 26)
+        elif element.islower():
             key = ord(keyword[i % key_length]) - ord("a")
-            plaintext += alphabet_low[(alphabet_low.find(ciphertext[i]) - key) % 26]
+            if 97 <= ord(element) - key <= 122:
+                plaintext += chr((ord(element) - key))
+            else:
+                plaintext += chr((ord(element) - key) + 26)
         else:
-            plaintext += ciphertext[i]
+            plaintext += element
     return plaintext
