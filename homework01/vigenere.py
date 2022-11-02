@@ -11,7 +11,7 @@ def encrypt_vigenere(plaintext: str, keyword: str) -> str:
     ciphertext = ""
     key_length = len(keyword)
     for i in range(len(plaintext)):
-        symbol = plaintext[i]
+        symbol = str(plaintext[i])
         if symbol.isupper():
             key = ord(keyword[i % key_length]) - ord("A")
             if 65 <= ord(symbol) + key <= 90:
@@ -42,7 +42,7 @@ def decrypt_vigenere(ciphertext: str, keyword: str) -> str:
     plaintext = ""
     key_length = len(keyword)
     for i in range(len(ciphertext)):
-        element = ciphertext[i]
+        element = str(ciphertext[i])
         if element.isupper():
             key = ord(keyword[i % key_length]) - ord("A")
             if 65 <= ord(element) - key <= 90:
