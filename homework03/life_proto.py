@@ -11,7 +11,7 @@ Grid = tp.List[Cells]
 
 class GameOfLife:
     def __init__(
-            self, width: int = 640, height: int = 480, cell_size: int = 10, speed: int = 10
+        self, width: int = 640, height: int = 480, cell_size: int = 10, speed: int = 10
     ) -> None:
         self.width = width
         self.height = height
@@ -88,7 +88,7 @@ class GameOfLife:
             n = self.cell_height
             grid = []
             for i in range(n):
-                grid.append(temp_grid[i * divider: (i + 1) * divider])
+                grid.append(temp_grid[i * divider : (i + 1) * divider])
         else:
             temp_grid = []
             for i in range(self.cell_height * self.cell_width):
@@ -96,7 +96,7 @@ class GameOfLife:
             n = self.cell_height
             grid = []
             for i in range(n):
-                grid.append(temp_grid[i * divider: (i + 1) * divider])
+                grid.append(temp_grid[i * divider : (i + 1) * divider])
         return grid
 
     def draw_grid(self) -> None:
@@ -141,9 +141,9 @@ class GameOfLife:
         for i in [-1, 0, 1]:
             for j in [-1, 0, 1]:
                 if (
-                        (x + i != x or y + j != y)
-                        and (0 <= x + i <= self.cell_width - 1)
-                        and (0 <= y + j <= self.cell_height - 1)
+                    (x + i != x or y + j != y)
+                    and (0 <= x + i <= self.cell_width - 1)
+                    and (0 <= y + j <= self.cell_height - 1)
                 ):
                     neighbour_x = x + i
                     neighbour_y = y + j
