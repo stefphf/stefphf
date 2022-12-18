@@ -2,6 +2,9 @@ import pathlib
 import typing as tp
 from random import randint
 
+import pygame
+from pygame.locals import *
+
 Cell = tp.Tuple[int, int]
 Cells = tp.List[int]
 Grid = tp.List[Cells]
@@ -15,7 +18,6 @@ class GameOfLife:
         max_generations: tp.Optional[float] = float("inf"),
     ) -> None:
         # Размер клеточного поля
-        self.neighbours = None
         self.rows, self.cols = size
         # Предыдущее поколение клеток
         self.prev_generation = self.create_grid()
@@ -105,7 +107,7 @@ class GameOfLife:
         """
         grid = []
         temp_grid = []
-        rows = sum(1 for _ in open(filename))
+        rows = sum(1 for line in open(filename))
         with open(filename, "r") as file:
             for i in range(rows):
                 lines = file.readline().replace("\n", "")

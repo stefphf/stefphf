@@ -2,6 +2,7 @@ import typing as tp
 from random import randint
 
 import pygame
+from pygame.locals import *
 
 Cell = tp.Tuple[int, int]
 Cells = tp.List[int]
@@ -12,9 +13,6 @@ class GameOfLife:
     def __init__(
         self, width: int = 640, height: int = 480, cell_size: int = 10, speed: int = 10
     ) -> None:
-        self.grid = None
-        self.neighbours = None
-        self.next_gen = None
         self.width = width
         self.height = height
         self.cell_size = cell_size
@@ -67,13 +65,16 @@ class GameOfLife:
     def create_grid(self, randomize: bool = False) -> Grid:
         """
         Создание списка клеток.
+
         Клетка считается живой, если ее значение равно 1, в противном случае клетка
         считается мертвой, то есть, ее значение равно 0.
+
         Parameters
         ----------
         randomize : bool
             Если значение истина, то создается матрица, где каждая клетка может
             быть равновероятно живой или мертвой, иначе все клетки создаются мертвыми.
+
         Returns
         ----------
         out : Grid
@@ -120,13 +121,16 @@ class GameOfLife:
     def get_neighbours(self, cell: Cell) -> Cells:
         """
         Вернуть список соседних клеток для клетки `cell`.
+
         Соседними считаются клетки по горизонтали, вертикали и диагоналям,
         то есть, во всех направлениях.
+
         Parameters
         ----------
         cell : Cell
             Клетка, для которой необходимо получить список соседей. Клетка
             представлена кортежем, содержащим ее координаты на игровом поле.
+
         Returns
         ----------
         out : Cells
@@ -149,6 +153,7 @@ class GameOfLife:
     def get_next_generation(self) -> Grid:
         """
         Получить следующее поколение клеток.
+
         Returns
         ----------
         out : Grid
