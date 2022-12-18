@@ -12,10 +12,10 @@ Grid = tp.List[Cells]
 
 class GameOfLife:
     def __init__(
-        self,
-        size: tp.Tuple[int, int],
-        randomize: bool = True,
-        max_generations: tp.Optional[float] = float("inf"),
+            self,
+            size: tp.Tuple[int, int],
+            randomize: bool = True,
+            max_generations: tp.Optional[float] = float("inf"),
     ) -> None:
         # Размер клеточного поля
         self.rows, self.cols = size
@@ -37,7 +37,7 @@ class GameOfLife:
             n = self.rows
             grid = []
             for i in range(n):
-                grid.append(temp_grid[i * divider : (i + 1) * divider])
+                grid.append(temp_grid[i * divider: (i + 1) * divider])
         else:
             temp_grid = []
             for i in range(self.rows * self.cols):
@@ -45,7 +45,7 @@ class GameOfLife:
             n = self.rows
             grid = []
             for i in range(n):
-                grid.append(temp_grid[i * divider : (i + 1) * divider])
+                grid.append(temp_grid[i * divider: (i + 1) * divider])
         return grid
 
     def get_neighbours(self, cell: Cell) -> Cells:
@@ -54,9 +54,9 @@ class GameOfLife:
         for i in [-1, 0, 1]:
             for j in [-1, 0, 1]:
                 if (
-                    (x + i != x or y + j != y)
-                    and (0 <= x + i <= self.cols - 1)
-                    and (0 <= y + j <= self.rows - 1)
+                        (x + i != x or y + j != y)
+                        and (0 <= x + i <= self.cols - 1)
+                        and (0 <= y + j <= self.rows - 1)
                 ):
                     neighbour_x = x + i
                     neighbour_y = y + j
