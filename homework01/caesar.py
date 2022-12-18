@@ -45,7 +45,7 @@ def decrypt_caesar(ciphertext: str, shift: int = 3) -> str:
     >>> decrypt_caesar("")
     ''
     """
-    plaintext = ""
+    plaintext: str = ""
     for i in range(len(ciphertext)):
         symbol = ciphertext[i]
         if symbol.isupper():
@@ -63,7 +63,7 @@ def decrypt_caesar(ciphertext: str, shift: int = 3) -> str:
     return plaintext
 
 
-def caesar_breaker_brute_force(ciphertext: str, dictionary: tp.Set[str]) -> int:
+def caesar_breaker_brute_force(dictionary: tp.Set[str]) -> int:
     """
     Brute force breaking a Caesar cipher.
     """

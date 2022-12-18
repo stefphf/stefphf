@@ -5,7 +5,6 @@ import typing as tp
 def is_prime(n: int) -> bool:
     """
     Tests to see if a number is prime.
-
     >>> is_prime(2)
     True
     >>> is_prime(11)
@@ -17,7 +16,7 @@ def is_prime(n: int) -> bool:
         return True
     if n % 2 == 0 or n < 2:
         return False
-    for i in range(3, int(n**0.5) + 1, 2):
+    for i in range(3, int(n ** 0.5) + 1, 2):
         if n % i == 0:
             return False
     return True
@@ -27,7 +26,6 @@ def is_prime(n: int) -> bool:
 def gcd(a: int, b: int) -> int:
     """
     Euclid's algorithm for determining the greatest common divisor.
-
     >>> gcd(12, 15)
     3
     >>> gcd(3, 7)
@@ -46,7 +44,6 @@ def multiplicative_inverse(e: int, phi: int) -> int:
     """
     Euclid's extended algorithm for finding the multiplicative
     inverse of two numbers.
-
     >>> multiplicative_inverse(7, 40)
     23
     """
@@ -107,7 +104,7 @@ def decrypt(pk: tp.Tuple[int, int], ciphertext: tp.List[int]) -> str:
     # Unpack the key into its components
     key, n = pk
     # Generate the plaintext based on the ciphertext and key using a^b mod m
-    plain = [chr((char**key) % n) for char in ciphertext]
+    plain = [chr((char ** key) % n) for char in ciphertext]
     # Return the array of bytes as a string
     return "".join(plain)
 
