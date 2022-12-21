@@ -1,26 +1,43 @@
-import textwrap
+import math
 import time
 import typing as tp
-from string import Template
 
-import pandas as pd
-from pandas import json_normalize
-
+import pandas as pd  # type: ignore
 from vkapi import config, session
 from vkapi.exceptions import APIError
 
+code = """
+    var query_params = %s;
+    var items = [];
+    var iterCount = 25;
+    var i = 0;
+    while (i < iterCount && query_params.count > 0) {
+        var responseItems = API.wall.get(query_params).items;
+        items.push(responseItems);
+        i = i + 1;
+        query_params.count = query_params.count - 100;
+        query_params.offset = query_params.offset + responseItems.length;
+    }
+    return items;
+"""
 
-def get_posts_2500(
-    owner_id: str = "",
-    domain: str = "",
-    offset: int = 0,
-    count: int = 10,
-    max_count: int = 2500,
-    filter: str = "owner",
-    extended: int = 0,
-    fields: tp.Optional[tp.List[str]] = None,
-) -> tp.Dict[str, tp.Any]:
-    pass
+
+def get_posts_2500(count: int = 2500, **kwargs: tp.Any) -> tp.List[tp.Dict[str, tp.Any]]:
+    kwargs["count"] = str(count)
+    code_data = code % kwargs
+    request_data = {
+        "access_token": config.VK_CONFIG["access_token"],
+        "v": config.VK_CONFIG["version"],
+        "code": code_data,
+    }
+
+    response = session.post("execute", **request_data)
+    try:
+        response_data = response.json()["response"]["items"]
+    except Exception as e:
+        raise APIError.bad_request(message=str(e))
+
+    return response_data
 
 
 def get_wall_execute(
@@ -34,19 +51,34 @@ def get_wall_execute(
     fields: tp.Optional[tp.List[str]] = None,
     progress=None,
 ) -> pd.DataFrame:
-    """
-    Возвращает список записей со стены пользователя или сообщества.
+    query_params = {
+        "owner_id": owner_id,
+        "domain": domain,
+        "offset": offset,
+        "filter": filter,
+        "extended": extended,
+        "fields": fields,
+        "v": "5.126",
+    }
 
-    @see: https://vk.com/dev/wall.get
+    wall_execute_data = []
+    iter_count = math.ceil(count / max_count)
+    i = 0
+    start = time.time()
+    while (i < iter_count) and (count > 0):
+        if count >= max_count:
+            posts_list = get_posts_2500(count=2500, **query_params)
+            wall_execute_data += posts_list
+            count -= 2500
+            query_params["offset"] += 2500  # type: ignore
+        else:
+            posts_list = get_posts_2500(count=count, kwargs=query_params)
+            wall_execute_data += posts_list
+            break
 
-    :param owner_id: Идентификатор пользователя или сообщества, со стены которого необходимо получить записи.
-    :param domain: Короткий адрес пользователя или сообщества.
-    :param offset: Смещение, необходимое для выборки определенного подмножества записей.
-    :param count: Количество записей, которое необходимо получить (0 - все записи).
-    :param max_count: Максимальное число записей, которое может быть получено за один запрос.
-    :param filter: Определяет, какие типы записей на стене необходимо получить.
-    :param extended: 1 — в ответе будут возвращены дополнительные поля profiles и groups, содержащие информацию о пользователях и сообществах.
-    :param fields: Список дополнительных полей для профилей и сообществ, которые необходимо вернуть.
-    :param progress: Callback для отображения прогресса.
-    """
-    pass
+        requests_delta_time = time.time() - start
+        if requests_delta_time < 1:
+            time.sleep(1 - requests_delta_time)
+            start = time.time()
+
+    return pd.json_normalize(wall_execute_data)

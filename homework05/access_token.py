@@ -11,7 +11,7 @@ def get_access_token(client_id: int, scope: str) -> None:
     redirect_uri=https://oauth.vk.com/blank.hmtl&\
     scope={scope}&\
     &response_type=token&\
-    display=page&\
+    display=page&\ 
     v=5.102\
     """.replace(
         " ", ""
