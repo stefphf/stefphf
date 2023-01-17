@@ -5,14 +5,22 @@ from life import GameOfLife
 from ui import UI
 
 
+def draw_borders(screen) -> None:
+    """Отобразить рамку."""
+    screen.border("|", "|", "-", "-", "+", "+", "+", "+")
+
+
 class Console(UI):
     def __init__(self, life: GameOfLife) -> None:
         super().__init__(life)
         self.game = life
 
+
     def draw_borders(self, screen) -> None:
         """Отобразить рамку."""
         screen.border("|", "|", "-", "-", "+", "+", "+", "+")
+=======
+
 
     def draw_grid(self, screen) -> None:
         """Отобразить состояние клеток."""
@@ -24,7 +32,11 @@ class Console(UI):
         screen = curses.initscr()
         screen.nodelay(True)
         screen.resize(self.game.rows + 2, self.game.cols + 2)
+
         self.draw_borders(screen)
+=======
+        draw_borders(screen)
+
         while screen.getch() != ord("q"):
             self.draw_grid(screen)
             self.life.step()

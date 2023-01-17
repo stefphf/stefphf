@@ -11,15 +11,17 @@ def encrypt_vigenere(plaintext: str, keyword: str) -> str:
     ciphertext = ""
     key_length = len(keyword)
     for i in range(len(plaintext)):
-        symbol = str(plaintext[i])
-        if symbol.isupper():
+        symbol = plaintext[i]
+        if keyword[i % key_length].isupper():
             key = ord(keyword[i % key_length]) - ord("A")
+        else:
+            key = ord(keyword[i % key_length]) - ord("a")
+        if symbol.isupper():
             if 65 <= ord(symbol) + key <= 90:
                 ciphertext += chr((ord(symbol) + key))
             else:
                 ciphertext += chr((ord(symbol) + key) - 26)
         elif symbol.islower():
-            key = ord(keyword[i % key_length]) - ord("a")
             if 97 <= ord(symbol) + key <= 122:
                 ciphertext += chr((ord(symbol) + key))
             else:
@@ -42,19 +44,21 @@ def decrypt_vigenere(ciphertext: str, keyword: str) -> str:
     plaintext = ""
     key_length = len(keyword)
     for i in range(len(ciphertext)):
-        element = str(ciphertext[i])
-        if element.isupper():
+        symbol = ciphertext[i]
+        if keyword[i % key_length].isupper():
             key = ord(keyword[i % key_length]) - ord("A")
-            if 65 <= ord(element) - key <= 90:
-                plaintext += chr((ord(element) - key))
-            else:
-                plaintext += chr((ord(element) - key) + 26)
-        elif element.islower():
-            key = ord(keyword[i % key_length]) - ord("a")
-            if 97 <= ord(element) - key <= 122:
-                plaintext += chr((ord(element) - key))
-            else:
-                plaintext += chr((ord(element) - key) + 26)
         else:
-            plaintext += element
+            key = ord(keyword[i % key_length]) - ord("a")
+        if symbol.isupper():
+            if 65 <= ord(symbol) - key <= 90:
+                plaintext += chr((ord(symbol) - key))
+            else:
+                plaintext += chr((ord(symbol) - key) + 26)
+        elif symbol.islower():
+            if 97 <= ord(symbol) - key <= 122:
+                plaintext += chr((ord(symbol) - key))
+            else:
+                plaintext += chr((ord(symbol) - key) + 26)
+        else:
+            plaintext += symbol
     return plaintext
