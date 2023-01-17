@@ -43,6 +43,29 @@ class MutualFriends(tp.TypedDict):
     common_count: int
 
 
+def _get_mutual_list_from_api(
+    requests_count: int = 1, **query_params
+) -> tp.Union[tp.List[int], tp.List[tp.Dict[str, tp.Any]]]:
+    mutual_list = []
+    requests_send_count, start = 0, time.time()
+    for _ in range(requests_count):
+        response = session.get("friends.getMutual", **query_params)
+        if response.status_code == 200:
+            response_data = response.json()["response"]
+            mutual_list.extend(response_data)
+
+        query_params["offset"] += VK_CONFIG["target_limit"]
+        requests_send_count += 1
+
+        requests_delta_time = time.time() - start
+        if requests_delta_time < 1 and requests_send_count >= 3:
+            time.sleep(1 - requests_delta_time)
+            start = time.time()
+            requests_send_count = 0
+
+    return mutual_list
+
+
 def get_mutual(
     source_uid: tp.Optional[int] = None,
     target_uid: tp.Optional[int] = None,
@@ -64,19 +87,11 @@ def get_mutual(
 
     requests_count = 1
     if target_uids is not None:
-        target_limit = 100
+        target_limit = VK_CONFIG["target_limit"]
         assert isinstance(target_limit, int)
         requests_count = math.ceil(len(target_uids) / target_limit)
 
-    mutual_list = []
-    for _ in range(requests_count):
-        response = session.get("friends.getMutual", **query_params)
-        if response.status_code == 200:
-            response_data = response.json()["response"]
-            mutual_list.extend(response_data)
-        query_params["offset"] += 100
-        time.sleep(1)
-
+    mutual_list = _get_mutual_list_from_api(requests_count, **query_params)
     try:
         mutual_friends_list = [MutualFriends(**item) for item in mutual_list]  # type: ignore
     except TypeError:
