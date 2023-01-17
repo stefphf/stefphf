@@ -3,3 +3,17 @@ isort==5.4.2
 mypy==0.782
 pylint==2.6.0
 pytest==6.0.1
+
+pygame~=2.1.2
+setuptools~=47.1.0
+rsa~=4.9
+pandas~=1.5.2
+vkapi~=1.1
+requests~=2.28.1
+community~=1.0.0b1
+matplotlib~=3.6.2
+networkx~=2.8.8
+gensim~=4.2.0
+
+tqdm~=4.64.1
+bottle~=0.12.23

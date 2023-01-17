@@ -64,7 +64,6 @@ def get_wall_execute(
     wall_execute_data = []
     iter_count = math.ceil(count / max_count)
     i = 0
-    start = time.time()
     while (i < iter_count) and (count > 0):
         if count >= max_count:
             posts_list = get_posts_2500(count=2500, **query_params)
@@ -75,10 +74,5 @@ def get_wall_execute(
             posts_list = get_posts_2500(count=count, kwargs=query_params)
             wall_execute_data += posts_list
             break
-
-        requests_delta_time = time.time() - start
-        if requests_delta_time < 1:
-            time.sleep(1 - requests_delta_time)
-            start = time.time()
-
+        time.sleep(1)
     return pd.json_normalize(wall_execute_data)

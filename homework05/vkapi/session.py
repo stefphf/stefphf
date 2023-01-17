@@ -1,7 +1,7 @@
 import typing as tp
 
-import requests
-from requests.adapters import HTTPAdapter, Retry
+import requests  # type: ignore
+from requests.adapters import HTTPAdapter, Retry  # type: ignore
 
 
 class Session:
