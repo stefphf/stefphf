@@ -3,8 +3,9 @@ import unittest
 from unittest.mock import patch
 from urllib.parse import unquote
 
-import pandas as pd  # type: ignore
+import pandas as pd
 import responses
+
 from vkapi.wall import get_wall_execute
 
 
@@ -42,7 +43,7 @@ class GetWallTestCase(unittest.TestCase):
             wall.to_dict("records"),
             msg="Вы должны сделать один запрос, чтобы узнать общее число записей",
         )
-        resp_body = unquote(responses.calls[0].request.body).replace("'", '"')
+        resp_body = unquote(responses.calls[0].request.body)
         self.assertTrue(
             '"count":"1"' in resp_body or '"count":+"1"' in resp_body,
             msg="Вы должны сделать один запрос, чтобы узнать общее число записей",
