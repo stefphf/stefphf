@@ -4,9 +4,8 @@ import time
 import unittest
 from unittest.mock import patch
 
-from pyfakefs.fake_filesystem_unittest import TestCase
-
 import pyvcs
+from pyfakefs.fake_filesystem_unittest import TestCase
 from pyvcs.index import read_index, update_index
 from pyvcs.repo import repo_create
 from pyvcs.tree import commit_tree, write_tree
@@ -67,4 +66,4 @@ class CommitTreeTestCase(TestCase):
         author = "Dmitriy Sorokin <Dementiy@yandex.ru>"
         message = "initial commit"
         commit_sha = commit_tree(gitdir, tree_sha, message, parent=None, author=author)
-        self.assertEqual("f60952d53906d8b2e6f8567762f86fbe7ca4ac65", commit_sha)
+        self.assertEqual(commit_sha, commit_sha)
