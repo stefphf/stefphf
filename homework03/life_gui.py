@@ -1,3 +1,5 @@
+import argparse
+
 import pygame
 from life import GameOfLife
 from ui import UI
@@ -71,3 +73,9 @@ class GUI(UI):
                     pygame.display.flip()
                     clock.tick(self.speed)
         pygame.quit()
+
+game = GameOfLife((24, 32))
+ui = GUI(game, 10)
+ui.run()
+=======
+

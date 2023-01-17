@@ -2,6 +2,12 @@ import pathlib
 import typing as tp
 from random import randint
 
+
+import pygame
+from pygame.locals import *
+=======
+
+
 Cell = tp.Tuple[int, int]
 Cells = tp.List[int]
 Grid = tp.List[Cells]
