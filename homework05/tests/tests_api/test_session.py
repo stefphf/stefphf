@@ -1,10 +1,9 @@
 import time
 import unittest
 
-import httpretty
+import httpretty  # type: ignore
 import responses
 from requests.exceptions import ConnectionError, HTTPError, ReadTimeout, RetryError
-
 from vkapi.session import Session
 
 
@@ -38,7 +37,7 @@ class TestSession(unittest.TestCase):
     def test_backoff_factor(self):
         backoff_factor = 0.5
         max_retries = 4
-        total_delay = sum(backoff_factor * (2 ** n) for n in range(1, max_retries))
+        total_delay = sum(backoff_factor * (2**n) for n in range(1, max_retries))
 
         session = Session(
             "https://example.com",
